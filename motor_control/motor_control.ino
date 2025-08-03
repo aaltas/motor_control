@@ -2,10 +2,10 @@
 #include <AFMotor.h>
 
 // Motor tanımları
-AF_DCMotor motor1(1);
-AF_DCMotor motor2(2);
-AF_DCMotor motor3(3);
-AF_DCMotor motor4(4);
+AF_DCMotor motor1(1);// Sağ Ön
+AF_DCMotor motor2(2);// Sağ Arka
+AF_DCMotor motor3(3);// Sol Arka
+AF_DCMotor motor4(4);// Sol Ön
 
 // Gelen komut
 char command;
@@ -22,6 +22,11 @@ void loop() {
     speedValue = Serial.parseInt();        // Sayı değerini oku (hız)
 
     ApplyCommand(command, speedValue);     // Komutu uygula
+    Serial.println(command);
+
+    while (Serial.available()) {
+      Serial.read();
+    }
   }
 }
 
@@ -31,27 +36,18 @@ void ApplyCommand(char cmd, int spd) {
 
   switch (cmd) {
     case 'f':
-      Serial.print("Ileri gidiliyor. Hiz: ");
-      Serial.println(spd);
       Move_Forward();
       break;
     case 'b':
-      Serial.print("Geri gidiliyor. Hiz: ");
-      Serial.println(spd);
       Move_Backward();
       break;
     case 'l':
-      Serial.print("Sola donuluyor. Hiz: ");
-      Serial.println(spd);
       Move_Left();
       break;
     case 'r':
-      Serial.print("Saga donuluyor. Hiz: ");
-      Serial.println(spd);
       Move_Right();
       break;
     case 's':
-      Serial.println("Duruldu.");
       Move_Release();
       break;
     default:
@@ -68,8 +64,10 @@ void SetSpeed(int spd) {
 }
 
 void Move_Forward() {
-  motor1.run(FORWARD); motor2.run(FORWARD);
-  motor3.run(FORWARD); motor4.run(FORWARD);
+  motor1.run(FORWARD); 
+  motor2.run(FORWARD);
+  motor3.run(FORWARD); 
+  motor4.run(FORWARD);
 }
 
 void Move_Backward() {
